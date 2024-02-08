@@ -6,10 +6,12 @@ db= sqlite3.connect("data.db")
 cursor = db.cursor()
 query = "SELECT ID, Nazwa FROM Score"
 class Info():
-    def info_tab1():
-        t.Label(tab1,text="Wprowadź Identyfikator !").place(relx=0.5,rely=1,anchor="s")
-    def info_tab3():
-        t.Label(tab3,text="Wprowadź Identyfikator !").place(relx=0.5,rely=1,anchor="s")
+    def __init__(self,text,text2):
+        self.text = text
+        self.text2 = text2
+        t.Label(tab1, text=text).place(relx=0.5,rely=1, anchor="s")
+        t.Label(tab3, text=text).place(relx=0.5,rely=1, anchor="s")
+        t.Label(tab2, text=text2).place(relx=0.5,rely=1, anchor="s")
 def open():
     link_id = id.get()
     query2 = f"SELECT Link FROM Score WHERE ID == ? ;"
@@ -46,13 +48,13 @@ notebook.add(tab1, text="Open")
 notebook.add(tab2, text="Add")
 notebook.add(tab3, text="Delete")
 notebook.pack(expand=True,fill="both")
+Info("Wprowadź identyfikator","Wprowadź nazwę odnośnika oraz link")
 #Open webbrowser
 for r in rows:
     r = t.Label(tab1, text=r).pack()
 id = t.Entry(tab1, width=5, justify="center")
 id.pack()
 t.Button(tab1, text="Open", command=open).pack()
-Info.info_tab1()
 #Add records
 t.Label(tab2, text="Nazwa").place(relx=0.3, rely=0, anchor="n")
 t.Label(tab2, text="Link").place(relx=0.7, rely=0, anchor="n")
@@ -67,7 +69,6 @@ for row in rows:
 del_score = t.Entry(tab3, width=5, justify="center")
 del_score.pack()
 t.Button(tab3, text="Delete", command=delete).pack()
-Info.info_tab3()
 window.mainloop()
 db.commit()
 db.close()
