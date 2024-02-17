@@ -2,6 +2,12 @@ import sqlite3
 import webbrowser
 import tkinter as t
 from tkinter import ttk, Frame
+import os
+
+if os.path.isfile('data.db'):
+     pass
+else:
+     os.system("echo. > data.db")
 db= sqlite3.connect("data.db")
 cursor = db.cursor()
 query = "SELECT ID, Nazwa FROM Score"
