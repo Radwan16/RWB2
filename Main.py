@@ -2,6 +2,24 @@ import sqlite3
 import webbrowser
 import tkinter as t
 from tkinter import ttk, Frame
+import os
+def create_table():
+    db_first = sqlite3.connect("data.db")
+    cur= db.cursor()
+    create_query = "CREATE TABE 'Score'('ID'INTEGER, 'Nazwa'TEXT,'Link'TEXT, PRIMARY KEY ('ID'))"
+    cur.execute(create_query)
+    db_first.commit()
+    db_first.close()
+
+
+if os.path.isfile("data.db"):
+    print("True")
+else:
+    os.system("echo. > data.db")
+    create_table()
+    print("Utworzono tabelę uruchom ponownie program")
+
+
 db= sqlite3.connect("data.db")
 cursor = db.cursor()
 query = "SELECT ID, Nazwa FROM Score"
@@ -62,7 +80,7 @@ nazwa = t.Entry(tab2, width=6)
 nazwa.place(relx=0.3, rely=0.1,anchor="n")
 link = t.Entry(tab2, width=10)
 link.place(relx=0.7, rely=0.1,anchor="n")
-t.Button(tab2, text="Add", command=add).place(relx=0.4, rely=0.3)
+t.Button(tab2, text="Add", command=add).place(relx=0.5, rely=0.6, anchor="s")
 # Delete records
 for row in rows:
     t. Label(tab3, text=row).pack()
