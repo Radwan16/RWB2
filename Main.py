@@ -3,6 +3,7 @@ import webbrowser
 import tkinter as t
 from tkinter import ttk, Frame
 import os
+
 def create_table():
     db_first = sqlite3.connect("data.db")
     cur= db.cursor()
@@ -19,6 +20,13 @@ else:
     create_table()
     print("Utworzono tabelę uruchom ponownie program")
 
+
+
+
+if os.path.isfile('data.db'):
+     pass
+else:
+     os.system("echo. > data.db")
 
 db= sqlite3.connect("data.db")
 cursor = db.cursor()
