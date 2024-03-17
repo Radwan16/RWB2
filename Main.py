@@ -6,7 +6,6 @@ import os
 
 db= sqlite3.connect("data.db")
 cursor = db.cursor()
-query = "SELECT ID, Nazwa FROM Score"
 class Info():
     def __init__(self,text,text2):
         self.text = text
@@ -37,8 +36,7 @@ def delete():
     label2 = t.Label(tab3, text="Pomyślnie usunięto! Uruchom ponownie program")
     label2.place(relx=0.5, rely=1, anchor="s")
     window.after(7000, lambda: label2.destroy())
-cursor.execute(query)
-rows = cursor.fetchall()
+
 window = t.Tk()
 window.geometry("400x200")
 window.title("RWB2")
@@ -51,9 +49,15 @@ notebook.add(tab2, text="Add")
 notebook.add(tab3, text="Delete")
 notebook.pack(expand=True,fill="both")
 Info("Wprowadź identyfikator","Wprowadź nazwę odnośnika oraz link")
+def show(note, note2):
+    query = "SELECT ID, Nazwa From Score"
+    cursor.execute(query)
+    rows = cursor.fetchall()
+    for r in rows:
+        t.Label(note, text=r).pack()
+        t.Label(note2,text=r).pack()
+show(tab1,tab3)
 #Open webbrowser
-for r in rows:
-    r = t.Label(tab1, text=r).pack()
 id = t.Entry(tab1, width=5, justify="center")
 id.pack()
 t.Button(tab1, text="Open", command=open).pack()
@@ -66,8 +70,6 @@ link = t.Entry(tab2, width=10)
 link.place(relx=0.7, rely=0.1,anchor="n")
 t.Button(tab2, text="Add", command=add).place(relx=0.5, rely=0.6, anchor="s")
 # Delete records
-for row in rows:
-    t. Label(tab3, text=row).pack()
 del_score = t.Entry(tab3, width=5, justify="center")
 del_score.pack()
 t.Button(tab3, text="Delete", command=delete).pack()
