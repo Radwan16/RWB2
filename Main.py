@@ -4,7 +4,7 @@ import tkinter as t
 from tkinter import ttk, Frame
 import os
 
-db= sqlite3.connect("data.db")
+db= sqlite3.connect("C:\Python\projekty_py\RWB2\data.db")
 cursor = db.cursor()
 class Info():
     def __init__(self,text,text2):
@@ -13,19 +13,30 @@ class Info():
         t.Label(tab1, text=text).place(relx=0.5,rely=1, anchor="s")
         t.Label(tab3, text=text).place(relx=0.5,rely=1, anchor="s")
         t.Label(tab2, text=text2).place(relx=0.5,rely=1, anchor="s")
+
+def delete_entry(entry):
+    entry.delete(0,'end')
+def delete_add(entry,entry2):
+    entry.delete(0,'end')
+    entry2.delete(0,'end')
+
 def open():
     link_id = id.get()
     query2 = f"SELECT Link FROM Score WHERE ID == ? ;"
     cursor.execute(query2,(link_id))
     link = cursor.fetchone()
-    webbrowser.open(link[0])
+    if link:
+        webbrowser.open(link[0])
+        delete_entry(id)
 def add():
-    global nazwa
-    global link
-    nazwa = nazwa.get()
-    link = link.get()
+    global nazwa_entry
+    global link_entry
+    nazwa = nazwa_entry.get()
+    link = link_entry.get()
     query3 = f"INSERT INTO Score VALUES(NULL, '{nazwa}', '{link}');"
     cursor.execute(query3)
+    if nazwa and link:
+        delete_add(nazwa_entry,link_entry)
     label1 = t.Label(tab2,text="Pomyślnie dodano! Uruchom ponownie program")
     label1.place(relx=0.5, rely=1, anchor="s")
     window.after(7000, lambda: label1.destroy())
@@ -33,12 +44,14 @@ def delete():
     del_id = del_score.get()
     query4 = f"DELETE FROM Score WHERE ID == ?;"
     cursor.execute(query4,(del_id))
+    if del_id:
+        delete_entry(del_score)
     label2 = t.Label(tab3, text="Pomyślnie usunięto! Uruchom ponownie program")
     label2.place(relx=0.5, rely=1, anchor="s")
     window.after(7000, lambda: label2.destroy())
 
 window = t.Tk()
-window.geometry("400x200")
+window.geometry("400x230")
 window.title("RWB2")
 notebook = ttk.Notebook(window)
 tab1 = Frame(notebook)
@@ -64,10 +77,10 @@ t.Button(tab1, text="Open", command=open).pack()
 #Add records
 t.Label(tab2, text="Nazwa").place(relx=0.3, rely=0, anchor="n")
 t.Label(tab2, text="Link").place(relx=0.7, rely=0, anchor="n")
-nazwa = t.Entry(tab2, width=6)
-nazwa.place(relx=0.3, rely=0.1,anchor="n")
-link = t.Entry(tab2, width=10)
-link.place(relx=0.7, rely=0.1,anchor="n")
+nazwa_entry = t.Entry(tab2, width=6)
+nazwa_entry.place(relx=0.3, rely=0.1,anchor="n")
+link_entry = t.Entry(tab2, width=10)
+link_entry.place(relx=0.7, rely=0.1,anchor="n")
 t.Button(tab2, text="Add", command=add).place(relx=0.5, rely=0.6, anchor="s")
 # Delete records
 del_score = t.Entry(tab3, width=5, justify="center")
