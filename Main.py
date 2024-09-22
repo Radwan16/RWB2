@@ -21,13 +21,18 @@ def delete_add(entry,entry2):
     entry2.delete(0,'end')
 
 def open():
-    link_id = id.get()
-    query2 = f"SELECT Link FROM Score WHERE ID == ? ;"
-    cursor.execute(query2,(link_id))
-    link = cursor.fetchone()
-    if link:
-        webbrowser.open(link[0])
-        delete_entry(id)
+    try:
+        link_id = id.get()
+        query2 = f"SELECT Link FROM Score WHERE ID == ? ;"
+        cursor.execute(query2,(link_id))
+        link = cursor.fetchone()
+        if link:
+            webbrowser.open(link[0])
+            delete_entry(id)
+    except sqlite3.ProgrammingError:
+        error = t.Label(text="Podaj ID")
+        error.place(relx=0.5, rely=0.8, anchor="s")
+        window.after(3000,lambda: error.destroy() )
 def add():
     global nazwa_entry
     global link_entry
