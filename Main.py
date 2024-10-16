@@ -30,9 +30,9 @@ def open():
             webbrowser.open(link[0])
             delete_entry(id)
     except sqlite3.ProgrammingError:
-        error = t.Label(text="Podaj ID")
+        error = t.Label(tab1,text="Podaj ID")
         error.place(relx=0.5, rely=0.8, anchor="s")
-        window.after(3000,lambda: error.destroy() )
+        window.after(3000,lambda: error.destroy())
 def add():
     global nazwa_entry
     global link_entry
@@ -46,14 +46,18 @@ def add():
     label1.place(relx=0.5, rely=1, anchor="s")
     window.after(7000, lambda: label1.destroy())
 def delete():
-    del_id = del_score.get()
-    query4 = f"DELETE FROM Score WHERE ID == ?;"
-    cursor.execute(query4,(del_id))
-    if del_id:
-        delete_entry(del_score)
-    label2 = t.Label(tab3, text="Pomyślnie usunięto! Uruchom ponownie program")
-    label2.place(relx=0.5, rely=1, anchor="s")
-    window.after(7000, lambda: label2.destroy())
+        del_id = del_score.get()
+        query4 = f"DELETE FROM Score WHERE ID == ?;"
+        cursor.execute(query4,(del_id,))
+        if del_id:
+            delete_entry(del_score)
+            label2 = t.Label(tab3, text="Pomyślnie usunięto! Uruchom ponownie program")
+            label2.place(relx=0.5, rely=1, anchor="s")
+        else:
+            error=t.Label(tab3,text="Podaj ID")
+            error.place(relx=0.5, rely=0.8, anchor="s")
+            window.after(3000, lambda: error.destroy())
+
 
 window = t.Tk()
 window.geometry("400x230")
